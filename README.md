@@ -2,6 +2,8 @@
 
 llm-cache-key-spec turns LLM request payloads into stable cache keys: Unicode NFC normalization, volatile-field stripping, recursive key sorting, whitespace collapse, canonical JSON, then a namespaced SHA-256 digest. Same logical request → same key, regardless of key order or stray whitespace. Use it to make prompt caching reproducible and collision-auditable. Confidence: High (≥80%) for stability under the documented normalizations, per the 61-check suite.
 
+<p align="center"><img src="docs/demo.gif" alt="demo" width="720"></p>
+
 ## Problem
 
 Prompt/response caches miss for stupid reasons: JSON objects serialized with different key order, a user's request carrying `session_id` or `timestamp` fields, double vs single spaces in a prompt, `1.0` vs `1`. Every miss is a paid model call. Worse, teams rarely test their cache keys for collisions at all. What is needed is one normalization spec + one digest function + a collision tester you can run over your corpus.
